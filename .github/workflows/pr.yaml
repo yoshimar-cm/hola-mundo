@@ -1,0 +1,26 @@
+name: PR Check
+
+on:
+  pull_request:
+
+jobs:
+  check-html:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verificar archivo HTML
+        run: |
+          if [ ! -f index.html ]; then
+            echo "Error: El archivo index.html no existe"
+            exit 1
+          fi
+
+          if ! grep -q "Hola Mundo" index.html; then
+            echo "Error: El archivo index.html no contiene 'Hola Mundo'"
+            exit 1
+          fi
+
+          echo "Verificación completada: El archivo existe y contiene 'Hola Mundo'"
