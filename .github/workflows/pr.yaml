@@ -1,24 +1,26 @@
 name: PR Check
 
 on:
-  - pull_request
+  pull_request:
 
 jobs:
-  check:
+  check-html:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: /
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
-      # - name: Install Dependencies
-      #   run: | 
-      #     npm install
 
-      # - name: Run Test
-      #   run: | 
-      #     npm run test
+      - name: Verificar archivo HTML
+        run: |
+          if [ ! -f index.html ]; then
+            echo "Error: El archivo index.html no existe"
+            exit 1
+          fi
+
+          if ! grep -q "Hola Mundo" index.html; then
+            echo "Error: El archivo index.html no contiene 'Hola Mundo'"
+            exit 1
+          fi
+
+          echo "Verificación completada: El archivo existe y contiene 'Hola Mundo'"
